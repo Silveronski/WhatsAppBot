@@ -5,7 +5,6 @@ const qrcode = require('qrcode-terminal');
 let contacts;
 
 const client = new Client({
-    puppeteer: {headless: false},
     authStrategy: new LocalAuth()
 });
 
