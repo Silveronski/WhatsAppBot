@@ -5,7 +5,9 @@ const qrcode = require('qrcode-terminal');
 let contacts;
 
 const client = new Client({
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth({
+        dataPath: '../whatsAppSession'
+    })
 });
 
 client.on('qr', (qr) => {
