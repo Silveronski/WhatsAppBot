@@ -58,12 +58,12 @@ client.on('message', msg => {
         
         if (proceed){
             if (msg.body.trim() === "1" || msg.body.trim() === "0" || parseInt(msg.body) > 1){
-                if (parseInt(msg.body) >= 1) {
+                 if (parseInt(msg.body) >= 1) {
                     msg.reply(currentContact.contactComing()); 
                 }
                 else {
                     msg.reply(currentContact.contactNotComing());
-                }               
+                }              
                 currentContact.hasResponded = true;
                 currentContact.howManyComing = msg.body.trim();
                 contactOperations.saveContactAttendanceInfo(currentContact, contacts);               
