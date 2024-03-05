@@ -6,7 +6,7 @@ let contacts;
 
 const client = new Client({
     authStrategy: new LocalAuth({
-        dataPath: '../whatsAppSession'
+        dataPath: './whatsAppSession'
     })
 });
 
