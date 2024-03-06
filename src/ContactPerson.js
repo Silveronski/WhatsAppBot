@@ -9,24 +9,25 @@ class ContactPerson{
 
     greeting() {
         return "שלום " + this.name.trim() + ".\n"+
-               "הנכם מוזמנים לחתונה של פז חכם וליאור זילבר ב- 17/09/2024 בשעה 19:30 באולמי טרה, קיסריה.\n\n"+
-               "אנא אשרו הגעתכם והשיבו עם מספר המגיעים בלבד כמפורט:\n"+
+               "הנכם מוזמנים לחתונה של ליאור זילבר ופז חכם 💍\n"+
+               "החתונה תתקיים ב- 17/09/2024 יום שלישי בשעה 19:30 באולמי טרה, קיסריה.\n\n"+
+               "אנא אשרו הגעתכם והשיבו עם מספר המגיעים כמפורט:\n"+
                "מגיע/ה לבד? השיבו \"1\".\n" +
                "מגיעים יותר? השיבו עם מספר המגיעים המדויק.\n" +
                "לא מגיעים? השיבו \"0\".";
     }
     
-    invalidAnswerReceived(){
+    invalidAnswerReceived() {
         return "אנא השיבו להודעה זו עם מספר המגיעים המדויק.\n" +
                "במידה ואתם לא מגיעים, השיבו \"0\".";
     }
 
-    contactComing(){
-        return "איזה כיף שאתם באים, תודה על המענה!"
+    contactComing() {
+        return "איזה כיף שאתם באים 🥰, נתראה!"
                
     }
 
-    contactNotComing(){
+    contactNotComing() {
         return "אוף, איזה באסה, תודה על המענה!";
     }
 }

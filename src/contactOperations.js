@@ -1,7 +1,7 @@
-const path = require('path');
 const ContactPerson = require('./ContactPerson');
 const fs = require('fs');
 const iconv = require('iconv-lite');
+const path = require('path');
 const contactsFilePath = path.join(__dirname, '../data/contacts.csv');
 
 const readContactsFromFile = () => {
