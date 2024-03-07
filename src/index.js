@@ -27,33 +27,34 @@ client.on('ready', async () => {
     sendMessageToContacts();
 });
 
-client.on('message', msg => {
+client.on('message', async msg => {
     if (contacts) {
         let currentContact = contacts.find(contact => contact.phoneNumber === msg.from
             && !contact.hasResponded && contact.hasReceivedMsg);
         let proceed = currentContact !== undefined;
-        
-        if (proceed){
-            if (msg.body.trim() === "1" || msg.body.trim() === "0" || parseInt(msg.body) > 1){
-                 if (parseInt(msg.body) >= 1) {
-                    msg.reply(currentContact.contactComing()); 
-                }
-                else {
-                    msg.reply(currentContact.contactNotComing());
-                }              
-                currentContact.hasResponded = true;
-                currentContact.howManyComing = msg.body.trim();     
-                contactOperations.saveContactAttendanceInfo(currentContact, contacts)
-                    .catch(error => {
-                        console.error('Error saving contact attendance info:', error);
-                        currentContact.hasResponded = false;
-                        client.sendMessage(currentContact.phoneNumber, currentContact.errorInResponse());
-                    });         
+              
+        if (proceed && (msg.body.trim() === "1" || msg.body.trim() === "0" || parseInt(msg.body) > 1)){
+
+            if (parseInt(msg.body) >= 1) {
+                msg.reply(currentContact.contactComing()); 
             }
             else {
-                client.sendMessage(msg.from, currentContact.invalidAnswerReceived());
-            }
-        }   
+                msg.reply(currentContact.contactNotComing());
+            }   
+                       
+            currentContact.hasResponded = true;
+            currentContact.howManyComing = msg.body.trim();     
+            await contactOperations.saveContactAttendanceInfo(currentContact, contacts)
+                .catch(error => {
+                    console.error('Error saving contact attendance info:', error);
+                    currentContact.hasResponded = false;
+                    client.sendMessage(currentContact.phoneNumber, currentContact.errorInResponse());
+                });         
+        }
+        else {
+            client.sendMessage(msg.from, currentContact.invalidAnswerReceived());
+        }
+          
     }  
 });
 
