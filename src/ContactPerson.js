@@ -8,7 +8,7 @@ class ContactPerson{
     }
 
     greeting() {
-        return "שלום " + this.name.trim() + ".\n"+
+        return "שלום " + this.name.trim() + ".\n\n"+
                "הנכם מוזמנים לחתונה של ליאור זילבר ופז חכם 💍\n"+
                "החתונה תתקיים ב- 17/09/2024 יום שלישי בשעה 19:30 באולמי טרה, קיסריה.\n\n"+
                "אנא אשרו הגעתכם והשיבו עם מספר המגיעים כמפורט:\n"+
@@ -23,12 +23,16 @@ class ContactPerson{
     }
 
     contactComing() {
-        return "איזה כיף שאתם באים 🥰, נתראה!"
-               
+        return "איזה כיף שאתם באים 🥰, נתראה!";              
     }
 
     contactNotComing() {
         return "אוף, איזה באסה, תודה על המענה!";
+    }
+
+    errorInResponse() {
+        return "נתקלנו בבעיה בעיבוד ההודעה.\n"+
+                "אנא נסו שנית.";
     }
 }
 

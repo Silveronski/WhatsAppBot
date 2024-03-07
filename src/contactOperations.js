@@ -15,7 +15,7 @@ const readContactsFromFile = () => {
                 .map(row => {
                     const [name, phoneNumber] = row.split(',');
                     return new ContactPerson(name, phoneNumber);
-                });
+                }); 
 
             console.log("Contacts from contacts.csv:", contacts);
             resolve(contacts);
@@ -27,18 +27,22 @@ const readContactsFromFile = () => {
     });
 }
 
-const saveContactAttendanceInfo = (contact, contacts) => {
+const saveContactAttendanceInfo = async (contact, contacts) => {
 
-    console.log('contact to be saved: ', contact);
-
-    if (contact) {
-        const attendanceData = contacts.map(c => `"${c.name.trim()}",${c.phoneNumber.substring(0,12)},${c.howManyComing}`).join('\n');
-        const encodedData = iconv.encode(attendanceData, 'windows-1255');
-        fs.writeFileSync(contactsFilePath, encodedData);
+    try {
+        if (contact && contacts) {
+            const attendanceData = contacts.map(c => `"${c.name.trim()}",${c.phoneNumber.substring(0,12)},${c.howManyComing}`).join('\n');
+            const encodedData = iconv.encode(attendanceData, 'windows-1255');
+            await fs.promises.writeFile(contactsFilePath, encodedData);
+            console.log('Contact info saved successfully.', contact);
+        }
+        else {
+            console.error('Contact not found.');
+        }
     }
-    else {
-        console.error('Contact not saved.');
-    }
+    catch (err) {
+        throw err;
+    }  
 }
 
 module.exports = { readContactsFromFile, saveContactAttendanceInfo };

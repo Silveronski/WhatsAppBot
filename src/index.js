@@ -23,7 +23,7 @@ client.on('auth_failure', msg => {
 });
 
 client.on('ready', async () => {
-    await initializeContacts();
+    contacts = await contactOperations.readContactsFromFile();
     sendMessageToContacts();
 });
 
@@ -42,25 +42,21 @@ client.on('message', msg => {
                     msg.reply(currentContact.contactNotComing());
                 }              
                 currentContact.hasResponded = true;
-                currentContact.howManyComing = msg.body.trim();
-                contactOperations.saveContactAttendanceInfo(currentContact, contacts);               
+                currentContact.howManyComing = msg.body.trim();     
+                contactOperations.saveContactAttendanceInfo(currentContact, contacts)
+                    .catch(error => {
+                        console.error('Error saving contact attendance info:', error);
+                        currentContact.hasResponded = false;
+                        client.sendMessage(currentContact.phoneNumber, currentContact.errorInResponse());
+                    });         
             }
             else {
-                msg.reply(currentContact.invalidAnswerReceived());
+                client.sendMessage(msg.from, currentContact.invalidAnswerReceived());
             }
         }   
     }  
 });
 
-
-const initializeContacts = async () => {
-    try {
-        contacts = await contactOperations.readContactsFromFile();       
-    }
-    catch (err) {
-        console.error('Error initializing contacts:', err);
-    }    
-}
 
 const sendMessageToContacts = () => {
     const coupleImage = MessageMedia.fromFilePath('./assets/images/pazlior.jpg');
