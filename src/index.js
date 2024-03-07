@@ -3,6 +3,7 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 // const readline = require('readline');
 const qrcode = require('qrcode-terminal'); 
 const coupleImage = MessageMedia.fromFilePath('./assets/images/pazlior.jpg');
+let currentTime;
 let contacts;
 
 const client = new Client({
@@ -25,11 +26,12 @@ client.on('auth_failure', msg => {
 
 client.on('ready', async () => {
     contacts = await contactOperations.readContactsFromFile();
-    sendMessageToContacts();
+    await sendMessageToContacts();
+    currentTime = parseInt(Date.now().toLocaleString().substring(0,13).replace(/,/g,""));
 });
 
 client.on('message', async msg => {
-    if (contacts) {
+    if (contacts && parseMsgDateToNumber(msg.timestamp) > currentTime) {       
         let currentContact = contacts.find(contact => contact.phoneNumber === msg.from
             && !contact.hasResponded && contact.hasReceivedMsg);
         let proceed = currentContact !== undefined;
@@ -86,6 +88,10 @@ const sendMessageToContacts = async () => {
         console.error('Error sending messages to contacts:', error);
     }
 };
+
+const parseMsgDateToNumber = (msgDate) => {
+    return parseInt(msgDate.toLocaleString().replace(/,/g,""));
+}
 
 client.initialize();
 
