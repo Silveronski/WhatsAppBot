@@ -8,7 +8,7 @@ class ContactPerson{
     }
 
     greeting() {
-        return "שלום " + this.name.trim() + ".\n\n"+
+        return "שלום " + this.name.trim() + ",\n\n"+
                "הנכם מוזמנים לחתונה של ליאור זילבר ופז חכם 💍\n"+
                "החתונה תתקיים בתאריך- 17/09/2024 יום שלישי בשעה 19:30 בגן האירועים טרה, קיסריה.\n\n"+
                "אנא אשרו הגעתכם והשיבו עם מספר המגיעים כמפורט:\n"+
