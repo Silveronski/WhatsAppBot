@@ -2,6 +2,7 @@ const contactOperations = require('./contactOperations');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 // const readline = require('readline');
 const qrcode = require('qrcode-terminal'); 
+const coupleImage = MessageMedia.fromFilePath('./assets/images/pazlior.jpg');
 let contacts;
 
 const client = new Client({
@@ -32,8 +33,8 @@ client.on('message', async msg => {
         let currentContact = contacts.find(contact => contact.phoneNumber === msg.from
             && !contact.hasResponded && contact.hasReceivedMsg);
         let proceed = currentContact !== undefined;
-              
-        if (proceed && (msg.body.trim() === "1" || msg.body.trim() === "0" || parseInt(msg.body) > 1)){
+      
+        if (proceed && (msg.body.trim() === "1" || msg.body.trim() === "0" || parseInt(msg.body) > 1)) {
 
             if (parseInt(msg.body) >= 1) {
                 msg.reply(currentContact.contactComing()); 
@@ -41,7 +42,7 @@ client.on('message', async msg => {
             else {
                 msg.reply(currentContact.contactNotComing());
             }   
-                       
+                        
             currentContact.hasResponded = true;
             currentContact.howManyComing = msg.body.trim();     
             await contactOperations.saveContactAttendanceInfo(currentContact, contacts)
@@ -50,17 +51,17 @@ client.on('message', async msg => {
                     currentContact.hasResponded = false;
                     client.sendMessage(currentContact.phoneNumber, currentContact.errorInResponse());
                 });         
-        }
+        }               
         else {
-            client.sendMessage(msg.from, currentContact.invalidAnswerReceived());
-        }
-          
+            if (currentContact) {
+                await client.sendMessage(msg.from, currentContact.invalidAnswerReceived());
+            }
+        }         
     }  
 });
 
 
 const sendMessageToContacts = () => {
-    const coupleImage = MessageMedia.fromFilePath('./assets/images/pazlior.jpg');
     contacts.forEach(contact => {
         try {
             client.sendMessage(contact.phoneNumber, coupleImage, {caption: contact.greeting()});
