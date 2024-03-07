@@ -61,18 +61,31 @@ client.on('message', async msg => {
 });
 
 
-const sendMessageToContacts = () => {
-    contacts.forEach(contact => {
-        try {
-            client.sendMessage(contact.phoneNumber, coupleImage, {caption: contact.greeting()});
-            contact.hasReceivedMsg = true;
+const sendMessageToContacts = async () => {
+    try {
+        const results = await Promise.all(contacts.map(async (contact) => {
+            try {
+                await client.sendMessage(contact.phoneNumber, coupleImage, { caption: contact.greeting() });
+                contact.hasReceivedMsg = true;
+                return true; 
+            } 
+            catch (err) {
+                console.error('Error sending message to contact:', contact, err);
+                return false; 
+            }
+        }));
+
+        if (results.every(result => result)) {
+            console.log('Messages have been successfully sent.');
+        } 
+        else {
+            console.log('Some messages failed to send.');
         }
-        catch (err) {
-            console.error('Error sending the messages to the contacts', err);
-        }      
-    });
-    console.log('Messages have been succesfully sent.');
-}
+    } 
+    catch (error) {
+        console.error('Error sending messages to contacts:', error);
+    }
+};
 
 client.initialize();
 

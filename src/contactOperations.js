@@ -28,7 +28,6 @@ const readContactsFromFile = () => {
 }
 
 const saveContactAttendanceInfo = async (contact, contacts) => {
-
     try {
         if (contact && contacts) {
             const attendanceData = contacts.map(c => `"${c.name.trim()}",${c.phoneNumber.substring(0,12)},${c.howManyComing}`).join('\n');

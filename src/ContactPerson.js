@@ -44,7 +44,7 @@ class ContactPerson{
     }
 
     thankYou() {
-        return "";
+        return "תודה שהגעתם!";
     }
 }
 
