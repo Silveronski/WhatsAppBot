@@ -17,20 +17,20 @@ class ContactPerson{
                "לא מגיעים? השיבו \"0\".";
     }
     
-    invalidAnswerReceived() {
+    static invalidAnswerReceived() {
         return "אנא השיבו להודעה זו עם מספר המגיעים המדויק.\n" +
                "במידה ואתם לא מגיעים, השיבו \"0\".";
     }
 
-    contactComing() {
+    static contactComing() {
         return "איזה כיף שאתם באים 🥰 נתראה!";              
     }
 
-    contactNotComing() {
+    static contactNotComing() {
         return "אוף, איזה באסה, תודה על המענה!";
     }
 
-    errorInResponse() {
+    static errorInResponse() {
         return "נתקלנו בבעיה בעיבוד ההודעה.\n"+
                 "אנא נסו שנית.";
     }

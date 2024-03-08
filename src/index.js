@@ -1,9 +1,10 @@
 const contactOperations = require('./contactOperations');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-// const readline = require('readline');
 const qrcode = require('qrcode-terminal'); 
+const ContactPerson = require('./ContactPerson');
 const coupleImage = MessageMedia.fromFilePath('./assets/images/pazlior.jpg');
-let currentTime;
+// const readline = require('readline');
+let timeOfAppStartup;
 let contacts;
 
 const client = new Client({
@@ -27,43 +28,44 @@ client.on('auth_failure', msg => {
 client.on('ready', async () => {
     contacts = await contactOperations.readContactsFromFile();
     await sendMessageToContacts();
-    currentTime = parseInt(Date.now().toLocaleString().substring(0,13).replace(/,/g,""));
+    timeOfAppStartup = parseInt(Date.now().toLocaleString().substring(0,13).replace(/,/g,""));
 });
 
 client.on('message', async msg => {
-    if (contacts && parseMsgDateToNumber(msg.timestamp) > currentTime) { 
+    if (contacts && parseMsgDateToNumber(msg.timestamp) > timeOfAppStartup) { 
 
         let currentContact = contacts.find(contact => contact.phoneNumber === msg.from
             && !contact.hasResponded && contact.hasReceivedMsg);
         let proceed = currentContact !== undefined;
       
         if (proceed && hasOnlyNumericCharacters(msg.body)) {
-
             let contactInfoSaved = true;
             currentContact.hasResponded = true;
-            currentContact.howManyComing = msg.body.trim();     
-            await contactOperations.saveContactAttendanceInfo(currentContact, contacts)
-                .catch(error => {
-                    contactInfoSaved = false;
-                    currentContact.hasResponded = false;
-                    currentContact.howManyComing = -1;
-                    console.error('Error saving contact attendance info:', error);
-                    console.log("contact not saved:", currentContact);
-                    client.sendMessage(currentContact.phoneNumber, currentContact.errorInResponse());
-                }); 
-              
+            currentContact.howManyComing = msg.body.trim();
+            try {
+                await contactOperations.saveContactAttendanceInfo(currentContact, contacts)
+            }
+            catch (error) {
+                contactInfoSaved = false;
+                currentContact.hasResponded = false;
+                currentContact.howManyComing = -1;
+                console.error('Error saving contact attendance info:', error);
+                console.log("contact not saved:", currentContact);
+                await client.sendMessage(currentContact.phoneNumber, ContactPerson.errorInResponse());
+            }     
+                             
             if (contactInfoSaved) {
                 if (parseInt(msg.body) >= 1) {
-                    msg.reply(currentContact.contactComing()); 
+                    await client.sendMessage(currentContact.phoneNumber, ContactPerson.contactComing());                   
                 }
                 else {
-                    msg.reply(currentContact.contactNotComing());
+                    await client.sendMessage(currentContact.phoneNumber, ContactPerson.contactNotComing());
                 }                                          
             }   
         }               
         else {
             if (currentContact) {
-                await client.sendMessage(msg.from, currentContact.invalidAnswerReceived());
+                await client.sendMessage(currentContact.phoneNumber, ContactPerson.invalidAnswerReceived());
             }
         }         
     }  
