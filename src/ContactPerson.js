@@ -23,7 +23,7 @@ class ContactPerson{
     }
 
     contactComing() {
-        return "איזה כיף שאתם באים 🥰, נתראה!";              
+        return "איזה כיף שאתם באים 🥰 נתראה!";              
     }
 
     contactNotComing() {

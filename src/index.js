@@ -31,28 +31,35 @@ client.on('ready', async () => {
 });
 
 client.on('message', async msg => {
-    if (contacts && parseMsgDateToNumber(msg.timestamp) > currentTime) {       
+    if (contacts && parseMsgDateToNumber(msg.timestamp) > currentTime) { 
+
         let currentContact = contacts.find(contact => contact.phoneNumber === msg.from
             && !contact.hasResponded && contact.hasReceivedMsg);
         let proceed = currentContact !== undefined;
       
-        if (proceed && (msg.body.trim() === "1" || msg.body.trim() === "0" || parseInt(msg.body) > 1)) {
+        if (proceed && hasOnlyNumericCharacters(msg.body)) {
 
-            if (parseInt(msg.body) >= 1) {
-                msg.reply(currentContact.contactComing()); 
-            }
-            else {
-                msg.reply(currentContact.contactNotComing());
-            }   
-                        
+            let contactInfoSaved = true;
             currentContact.hasResponded = true;
             currentContact.howManyComing = msg.body.trim();     
             await contactOperations.saveContactAttendanceInfo(currentContact, contacts)
                 .catch(error => {
-                    console.error('Error saving contact attendance info:', error);
+                    contactInfoSaved = false;
                     currentContact.hasResponded = false;
+                    currentContact.howManyComing = -1;
+                    console.error('Error saving contact attendance info:', error);
+                    console.log("contact not saved:", currentContact);
                     client.sendMessage(currentContact.phoneNumber, currentContact.errorInResponse());
-                });         
+                }); 
+              
+            if (contactInfoSaved) {
+                if (parseInt(msg.body) >= 1) {
+                    msg.reply(currentContact.contactComing()); 
+                }
+                else {
+                    msg.reply(currentContact.contactNotComing());
+                }                                          
+            }   
         }               
         else {
             if (currentContact) {
@@ -91,6 +98,10 @@ const sendMessageToContacts = async () => {
 
 const parseMsgDateToNumber = (msgDate) => {
     return parseInt(msgDate.toLocaleString().replace(/,/g,""));
+}
+
+const hasOnlyNumericCharacters = (msgInput) => {
+    return msgInput.trim() !== '' && !/\D/.test(msgInput);
 }
 
 client.initialize();
