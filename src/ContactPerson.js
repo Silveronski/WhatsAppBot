@@ -2,9 +2,9 @@ class ContactPerson{
     constructor(name, phoneNumber){
         this.name = name.trim().replace(/^"(.*)"$/, '$1');
         this.phoneNumber = phoneNumber.trim() + "@c.us";
+        this.howManyComing = -1;
         this.hasResponded = false;
         this.hasReceivedMsg = false;
-        this.howManyComing = -1;
     }
 
     greeting() {
