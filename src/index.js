@@ -26,9 +26,9 @@ client.on('auth_failure', msg => {
 });
 
 client.on('ready', async () => {
-    contacts = await contactOperations.readContactsFromFile();
-    await sendMessageToContacts();
     timeOfAppStartup = parseInt(Date.now().toLocaleString().substring(0,13).replace(/,/g,""));
+    contacts = await contactOperations.readContactsFromFile();
+    sendMessageToContacts();
 });
 
 client.on('message', async msg => {
