@@ -1,16 +1,18 @@
+const weddingInfo = require('../data/weddingInfo.json');
+
 class ContactPerson{
-    constructor(name, phoneNumber){
+    constructor(name, phoneNumber, howManyComing){
         this.name = name.trim().replace(/^"(.*)"$/, '$1');
         this.phoneNumber = phoneNumber.trim() + "@c.us";
-        this.howManyComing = -1;
+        this.howManyComing = howManyComing;
         this.hasResponded = false;
-        this.hasReceivedMsg = false;
+        this.hasReceivedMsg = false;        
     }
 
     greeting() {
         return "שלום " + this.name.trim() + ",\n\n"+
-               "הנכם מוזמנים לחתונה של ליאור זילבר ופז חכם 💍\n"+
-               "החתונה תתקיים בתאריך- 17/09/2024 יום שלישי בשעה 19:30 בגן האירועים טרה, קיסריה.\n\n"+
+               `הנכם מוזמנים לחתונה של ${weddingInfo.bride} ו${weddingInfo.groom} 💍\n`+
+               `החתונה תתקיים בתאריך- ${weddingInfo.date} בשעה ${weddingInfo.reception_hour} ב${weddingInfo.venue}.\n\n`+
                "אנא אשרו הגעתכם והשיבו עם מספר המגיעים כמפורט:\n"+
                "מגיע/ה לבד? השיבו \"1\".\n" +
                "מגיעים יותר? השיבו עם מספר המגיעים המדויק.\n" +
@@ -37,10 +39,10 @@ class ContactPerson{
 
     reminder() {
         return "שלום " + this.name.trim() + ",\n"+
-                "מחכים לראות אתכם היום בחתונה של פז וליאור ♥\n"+
-                "גן האירועים טרה, החרש 19, קיסריה.\n"+
-                "קבלת פנים בשעה 19:30.\n"+
-                "לניווט: https://tinyurl.com/2wr2bfre"
+                `מחכים לראות אתכם היום בחתונה של ${weddingInfo.bride} ו${weddingInfo.groom} ♥\n`+
+                `${weddingInfo.detailedVenue}.\n`+
+                `קבלת פנים בשעה ${weddingInfo.reception_hour}.\n`+
+                `לניווט: ${weddingInfo.wazeNavUrl}`
     }
 
     thankYou() {

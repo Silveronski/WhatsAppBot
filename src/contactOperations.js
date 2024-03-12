@@ -12,8 +12,8 @@ const readContactsFromFile = async () => {
         const contacts = dataDecoded.split('\n')
         .filter(line => line.trim() !== '')
         .map(row => {
-            const [name, phoneNumber] = row.split(',');
-            return new ContactPerson(name, phoneNumber);
+            const [name, phoneNumber, howManyComing] = row.split(',');
+            return new ContactPerson(name, phoneNumber, howManyComing);
         }); 
 
         console.log("Contacts from contacts.csv:", contacts);
