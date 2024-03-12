@@ -10,7 +10,9 @@ let contacts;
 const client = new Client({
     authStrategy: new LocalAuth({
         dataPath: './whatsAppSession'
-    })
+    }),
+    webVersion: '2.2410.1',
+    webVersionCache: {type: 'local'}
 });
 
 client.on('qr', (qr) => {

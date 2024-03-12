@@ -1,0 +1,23 @@
+services:
+  app:
+    env_file:
+      - ./.env
+    container_name: "wa-bot"
+    working_dir: /app
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/app
+      - vscode-extensions:/root/.vscode-server/extensions
+    networks:
+      - wabot
+
+networks:
+  wabot:
+    name: wabot_network
+
+volumes:
+  app:
+  vscode-extensions:
