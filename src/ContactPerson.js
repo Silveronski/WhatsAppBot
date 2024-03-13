@@ -40,9 +40,9 @@ class ContactPerson{
     reminder() {
         return "שלום " + this.name.trim() + ",\n"+
                 `מחכים לראות אתכם היום בחתונה של ${weddingInfo.bride} ו${weddingInfo.groom} ♥\n`+
-                `${weddingInfo.detailedVenue}.\n`+
+                `${weddingInfo.detailed_venue}.\n`+
                 `קבלת פנים בשעה ${weddingInfo.reception_hour}.\n`+
-                `לניווט: ${weddingInfo.wazeNavUrl}`
+                `לניווט: ${weddingInfo.waze_nav_url}`
     }
 
     thankYou() {

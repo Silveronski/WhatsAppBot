@@ -2,8 +2,8 @@ const contactOperations = require('./contactOperations');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal'); 
 const ContactPerson = require('./ContactPerson');
+const readline = require('readline');
 const coupleImage = MessageMedia.fromFilePath('./assets/images/pazlior.jpg');
-// const readline = require('readline');
 let timeOfAppStartup;
 let contacts;
 
@@ -14,6 +14,42 @@ const client = new Client({
     webVersion: '2.2410.1',
     webVersionCache: {type: 'local'}
 });
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const promptUser = () => {
+    rl.question('Enter a command (greeting/reminder/thanks/exit): ', async (command) => {
+        switch (command) { 
+                              
+            case 'greeting':                         
+                await sendMessageToContacts();
+                rl.close(); 
+                break;
+                               
+            case 'reminder':
+                //
+                rl.close(); 
+                break;
+
+            case 'thanks':
+                //
+                rl.close(); 
+                break;
+
+            case 'exit':
+                console.log('Readline interface is now closed.');
+                rl.close(); 
+                process.exit();
+
+            default:
+                console.log('Invalid command. Please try again.');
+                promptUser();
+        }              
+    });
+}
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
@@ -30,7 +66,7 @@ client.on('auth_failure', msg => {
 client.on('ready', async () => {
     timeOfAppStartup = parseInt(Date.now().toLocaleString().substring(0,13).replace(/,/g,""));
     contacts = await contactOperations.readContactsFromFile();
-    sendMessageToContacts();
+    promptUser();
 });
 
 client.on('message', async msg => {
@@ -109,32 +145,3 @@ const hasOnlyNumericCharacters = (msgInput) => {
 }
 
 client.initialize();
-
-
-
-
-
-
-
-// const rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// });
-
-// const promptUser = () => {
-//     rl.question('Enter a command (send/exit): ', (command) => {
-//         if (command === 'send') {
-//             sendMessageToContacts();
-//             rl.close();
-//         } 
-//         else if (command === 'exit') {
-//             console.log('Readline interface is closed.');
-//             rl.close(); 
-//             process.exit();
-//         }
-//         else {
-//             console.log('Invalid command. Please try again.');
-//             promptUser(); 
-//         }
-//     });
-// }
