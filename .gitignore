@@ -2,3 +2,4 @@ node_modules/
 whatsAppSession/
 .wwebjs_cache/
 *.csv
+weddingInfo.json
