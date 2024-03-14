@@ -21,10 +21,10 @@ const rl = readline.createInterface({
 });
 
 const promptUser = () => {
-    rl.question('Enter a command (greeting/exit): ', async (command) => {
+    rl.question('Enter a command (send/exit): ', async (command) => {
         switch (command) { 
                               
-            case 'greeting':                         
+            case 'send':                         
                 await sendMessageToContacts();
                 rl.close(); 
                 break;                             
