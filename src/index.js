@@ -21,23 +21,13 @@ const rl = readline.createInterface({
 });
 
 const promptUser = () => {
-    rl.question('Enter a command (greeting/reminder/thanks/exit): ', async (command) => {
+    rl.question('Enter a command (greeting/exit): ', async (command) => {
         switch (command) { 
                               
             case 'greeting':                         
                 await sendMessageToContacts();
                 rl.close(); 
-                break;
-                               
-            case 'reminder':
-                //
-                rl.close(); 
-                break;
-
-            case 'thanks':
-                //
-                rl.close(); 
-                break;
+                break;                             
 
             case 'exit':
                 console.log('Readline interface is now closed.');

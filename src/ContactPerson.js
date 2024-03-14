@@ -18,11 +18,6 @@ class ContactPerson{
                "מגיעים יותר? השיבו עם מספר המגיעים המדויק.\n" +
                "לא מגיעים? השיבו \"0\".";
     }
-    
-    static invalidAnswerReceived() {
-        return "אנא השיבו להודעה זו עם מספר המגיעים המדויק.\n" +
-               "במידה ואתם לא מגיעים, השיבו \"0\".";
-    }
 
     static contactComing() {
         return "איזה כיף שאתם באים 🥰 נתראה!";              
@@ -30,6 +25,11 @@ class ContactPerson{
 
     static contactNotComing() {
         return "אוף, איזה באסה, תודה על המענה!";
+    }
+
+    static invalidAnswerReceived() {
+        return "אנא השיבו להודעה זו עם מספר המגיעים המדויק.\n" +
+               "במידה ואתם לא מגיעים, השיבו \"0\".";
     }
 
     static errorInResponse() {
